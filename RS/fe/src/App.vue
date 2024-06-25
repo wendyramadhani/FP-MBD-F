@@ -7,9 +7,10 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="coba" >
       <div class="d-flex justify-content-end">
           <RouterLink to="/dokter" class="tulisan btn text-white">dokter</RouterLink>
-          <RouterLink to="rawat_inap" class="tulisan btn text-white">pasien</RouterLink>
-          <button type="button" class="tulisan btn text-white">obat</button>
-          <button type="button" class="tulisan btn text-white">kamar</button>
+          <RouterLink to="/pasien" class="tulisan btn text-white">pasien</RouterLink>
+          <RouterLink to="/rawat_inap" class="tulisan btn text-white">Rawat Inap</RouterLink>
+          <RouterLink to="/rawat_jalan" class="tulisan btn text-white">Rawat jalan</RouterLink>
+
           <button type="button" class="tulisan btn text-white">pembayaran</button>
       </div>
       <div class="d-flex justify-content-start">
