@@ -78,6 +78,12 @@ const router = createRouter({
       props:true
     },
     {
+      path: '/pasien/add',
+      name: 'add_pasien',
+      component: () => import('../views/add_pasien.vue'),
+      props: true
+    },
+    {
       path: '/rawat_jalan',
       name: 'index_rawat_jalan',
       component: () => import('../views/rawat_jalan.vue'),
