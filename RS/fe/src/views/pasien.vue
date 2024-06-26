@@ -7,7 +7,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th>ID Pasien</th>
+              <th>No</th>
               <th>Nama Pasien</th>
               <th>Tanggal_Lahir</th>
               <th>Jenis Kelamin</th>
@@ -18,8 +18,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="person in doctors" :key="person.id_pasien">
-              <td>{{ person.id_pasien }}</td>
+            <tr v-for="(person, index) in doctors" :key="index">
+              <td>{{ index + 1 }}</td>
               <td>{{ person.nama }}</td>
               <td>{{ person.tanggal_lahir }}</td>
               <td>{{ person.jenis_kelamin }}</td>
@@ -27,7 +27,7 @@
               <td>{{ person.nomor_telepon }}</td>
               <td>{{ person.asuransi }}</td>
               <td>
-                <router-link :to="{ name: 'edit_dokter', params: { id: person.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link>
+                <router-link :to="{ name: 'edit_pasien', params: { id_pasien: person.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link>
                 <button type="button" class="btn btn-danger mx-1">Hapus</button>
               </td>
             </tr>
