@@ -1,39 +1,40 @@
 <template>
-  <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Pasien</th>
-          <th>Jenis Kelamin</th>
-          <th>Tanggal Diperiksa</th>
-          <th>Diagnosis</th>
-          <th>Nama Dokter</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(pasien, index) in pasienData" :key="pasien.id">
-          <td>{{ index + 1 }}</td>
-          <td>{{ pasien.nama }}</td>
-          <td>{{ pasien.jenis_kelamin }}</td>
-          <td>{{ formatDate(pasien.Tanggal_Diperiksa) }}</td>
-          <td>{{ pasien.Diagnosis }}</td>
-          <td>{{ pasien.nama_dokter }}</td>
-          <!-- <td>{{ formatDate(pasien.Tanggal_Keluar) }}</td> -->
-          <td>
-            <button type="button" class="btn btn-primary mx-auto">edit</button>
-            <button type="button" class="btn btn-danger mx-1">hapus</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="add d-flex justify-content-center">
-    <button type="button" class="btn btn-primary">Primary</button>
-  </div>
   <div>
-    <Dropdown/>
+    <div class="add d-flex justify-content-end">
+      <router-link :to="{ name: 'add_dokter' }" type="button" class="btn btn-primary">Add Data</router-link>
+    </div>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Pasien</th>
+            <th>Jenis Kelamin</th>
+            <th>Tanggal Diperiksa</th>
+            <th>Diagnosis</th>
+            <th>Nama Dokter</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(pasien, index) in pasienData" :key="pasien.id_pasien">
+            <td>{{ index + 1 }}</td>
+            <td>{{ pasien.nama }}</td>
+            <td>{{ pasien.jenis_kelamin }}</td>
+            <td>{{ formatDate(pasien.Tanggal_Diperiksa) }}</td>
+            <td>{{ pasien.Diagnosis }}</td>
+            <td>{{ pasien.nama_dokter }}</td>
+            <td>
+              <button type="button" class="btn btn-primary mx-auto">edit</button>
+              <button type="button" class="btn btn-danger mx-1">hapus</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <Dropdown/>
+    </div>
   </div>
 </template>
 

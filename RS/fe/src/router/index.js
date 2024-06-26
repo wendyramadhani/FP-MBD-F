@@ -80,7 +80,7 @@ const router = createRouter({
     {
       path: '/rawat_jalan',
       name: 'index_rawat_jalan',
-      component: () => import('../views/rawat_jalan/index.vue'),
+      component: () => import('../views/rawat_jalan.vue'),
       props: true
     }
   ]
