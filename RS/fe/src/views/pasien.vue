@@ -28,7 +28,7 @@
               <td>{{ person.asuransi }}</td>
               <td>
                 <router-link :to="{ name: 'edit_pasien', params: { id_pasien: person.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link>
-                <button type="button" class="btn btn-danger mx-1">Hapus</button>
+                <button type="button" class="btn btn-danger mx-1" @click="confirmDelete(person.id_pasien)">Hapus</button>
               </td>
             </tr>
           </tbody>
@@ -46,10 +46,10 @@
       };
     },
     created() {
-      this.fetchDoctors();
+      this.fetchPasien();
     },
     methods: {
-      async fetchDoctors() {
+      async fetchPasien() {
         try {
           const response = await fetch('http://localhost:3000/pasien'); // Ganti dengan endpoint API Anda
           if (!response.ok) {
@@ -62,14 +62,14 @@
           console.error('Error fetching data:', error);
         }
       },
-      confirmDelete(id) {
+      confirmDelete(id_pasien) {
         if (window.confirm("Apakah Anda yakin akan menghapus data ini?")) {
-          this.deleteDoctor(id);
+          this.deletePasien(id_pasien);
         }
       },
-      async deleteDoctor(id) {
+      async deletePasien(id_pasien) {
         try {
-          const response = await fetch(`http://localhost:3000/dokter/${id}`, {
+          const response = await fetch(`http://localhost:3000/pasien/${id_pasien}`, {
             method: 'DELETE'
           });
           if (!response.ok) {
@@ -83,7 +83,7 @@
         }
       },
       reloadData() {
-        this.fetchDoctors();
+        this.fetchPasien();
       }
     }
   };
