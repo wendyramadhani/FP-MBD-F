@@ -1,13 +1,13 @@
 <template>
     <div>
       <div class="add d-flex justify-content-end">
-        
+        <router-link :to="{ name: 'add_pasien' }" type="button" class="btn btn-primary">Add Pasien</router-link>
       </div>
       <div class="table-container">
         <table class="table">
           <thead>
             <tr>
-              <th>ID Pasien</th>
+              <th>No</th>
               <th>Nama Pasien</th>
               <th>Tanggal_Lahir</th>
               <th>Jenis Kelamin</th>
@@ -18,8 +18,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="person in doctors" :key="person.id_pasien">
-              <td>{{ person.id_pasien }}</td>
+            <tr v-for="(person, index) in doctors" :key="index">
+              <td>{{ index + 1 }}</td>
               <td>{{ person.nama }}</td>
               <td>{{ person.tanggal_lahir }}</td>
               <td>{{ person.jenis_kelamin }}</td>
@@ -27,8 +27,8 @@
               <td>{{ person.nomor_telepon }}</td>
               <td>{{ person.asuransi }}</td>
               <td>
-                <router-link :to="{ name: 'edit_dokter', params: { id: person.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link>
-                <button type="button" class="btn btn-danger mx-1">Hapus</button>
+                <router-link :to="{ name: 'edit_pasien', params: { id_pasien: person.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link>
+                <button type="button" class="btn btn-danger mx-1" @click="confirmDelete(person.id_pasien)">Hapus</button>
               </td>
             </tr>
           </tbody>
@@ -46,10 +46,10 @@
       };
     },
     created() {
-      this.fetchDoctors();
+      this.fetchPasien();
     },
     methods: {
-      async fetchDoctors() {
+      async fetchPasien() {
         try {
           const response = await fetch('http://localhost:3000/pasien'); // Ganti dengan endpoint API Anda
           if (!response.ok) {
@@ -62,14 +62,14 @@
           console.error('Error fetching data:', error);
         }
       },
-      confirmDelete(id) {
+      confirmDelete(id_pasien) {
         if (window.confirm("Apakah Anda yakin akan menghapus data ini?")) {
-          this.deleteDoctor(id);
+          this.deletePasien(id_pasien);
         }
       },
-      async deleteDoctor(id) {
+      async deletePasien(id_pasien) {
         try {
-          const response = await fetch(`http://localhost:3000/dokter/${id}`, {
+          const response = await fetch(`http://localhost:3000/pasien/${id_pasien}`, {
             method: 'DELETE'
           });
           if (!response.ok) {
@@ -83,7 +83,7 @@
         }
       },
       reloadData() {
-        this.fetchDoctors();
+        this.fetchPasien();
       }
     }
   };
