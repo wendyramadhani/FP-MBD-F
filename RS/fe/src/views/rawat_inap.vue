@@ -5,6 +5,7 @@
       <table class="table">
         <thead>
           <tr>
+            <th>No</th>
             <th>Nama Pasien</th>
             <th>Nomor Kamar</th>
             <th>Tanggal Lahir</th>
@@ -21,7 +22,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="person in people" :key="person.id">
+          <tr v-for="(person,index) in people" :key="person.id">
+            <td>{{ index+1}}</td>
             <td>{{ person.Nama }}</td>
             <td>{{ person.Nomor_Kamar }}</td>
             <td>{{ formatDate(person.Tanggal_Lahir) }}</td>
@@ -33,12 +35,11 @@
             <td>{{ formatDate(person.Tanggal_Keluar) }}</td>
             <td>{{ person.dokter.nama_dokter }}</td>
             <td>{{ person.dokter.spesialisasi }}</td>
-
             <td>{{ person.Diagnosis }}</td>
             <td>
               <div class="d-flex justify-content-between">
                 <div v-if="!person.Tanggal_Keluar">
-                  <router-link :to="{ name: 'edit_rawat_inap', params: { id_pasien: person.Pasien_ID_Pasien } }" class="btn btn-primary mx-auto">Edit</router-link>
+                  <button @click="navigateToEdit(person.Dokter_ID_Dokter,person.Resep_ID_Resep,person.ID_Rawat_Inap)" class="btn btn-primary mx-auto">Edit</button>
                 </div>
                 <button type="button" class="btn btn-danger mx-1">Hapus</button>
               </div>
@@ -48,7 +49,7 @@
       </table>
     </div>
     <div class="add d-flex justify-content-center">
-      <router-link :to="{ name: 'add_rawat_inap' }" class="btn btn-primary">Tambah</router-link>
+      <router-link :to="{ name: 'verif_pasien' }" class="btn btn-primary">Tambah</router-link>
     </div>
     <div>
       <Dropdown />
@@ -97,6 +98,8 @@ export default {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        this.people = data;
+        // console.log(this.people.ID_Rawat_Inap);
 
         // Map each patient with their corresponding doctor data
         this.people = data.map(person => {
@@ -115,6 +118,13 @@ export default {
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    },
+    navigateToEdit(id_dokter,id_resep,id_ri) {
+      // console.log(this.people);
+      // localStorage.setItem('obj_ri',this.people)
+      localStorage.setItem('id_resep', id_resep);
+      localStorage.setItem('id_ri',id_ri);
+      this.$router.push({ name: 'edit_rawat_inap', params: { id_dokter } });
     }
   }
 };

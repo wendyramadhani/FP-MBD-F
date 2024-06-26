@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     async submitForm() {
-      const url = 'http://localhost:3000/';
+      const url = 'http://localhost:3000/dokter';
       const data = {
         nama_dokter: this.nama_dokter,
         spesialisasi: this.spesialisasi,

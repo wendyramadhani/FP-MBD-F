@@ -2,7 +2,7 @@ const db = require('../config/db.config');
 
 const getAll = async () => {
     const [result] = await db.execute(
-        'SELECT nama_obat, deskripsi, stok, harga FROM obat'
+        'SELECT id_obat, nama_obat, deskripsi, stok, harga FROM obat'
     );
     return result;
 };
