@@ -76,6 +76,12 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/pasien.vue'),
       props:true
+    },
+    {
+      path: '/rawat_jalan',
+      name: 'index_rawat_jalan',
+      component: () => import('../views/rawat_jalan/index.vue'),
+      props: true
     }
   ]
 })
