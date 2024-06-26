@@ -1,98 +1,185 @@
 <template>
-    <div class="d-flex justify-content-center mt-3">
-      <div class="card p-3" style="width: max-content;">
-        <label for="spesialisasi">Pilih Spesialisasi:</label>
-        <select v-model="selectedSpesialisasi" id="spesialisasi" @change="fetchDoctors">
-          <option value="">Pilih Spesialisasi</option>
-          <option v-for="spesialisasi in spesialisasiOptions" :key="spesialisasi.id_dokter" :value="spesialisasi.spesialisasi">
-            {{ spesialisasi.spesialisasi }}
-          </option>
-        </select>
-  
-        <label for="doctors">Pilih Dokter:</label>
-        <select v-model="selectedDoctor" id="doctors">
-          <option value="">Pilih Dokter</option>
-          <option v-for="doctor in filteredDoctors" :key="doctor.id_dokter" :value="doctor.nama_dokter">
-            {{ doctor.nama_dokter }}
-          </option>
+  <div class="d-flex justify-content-center">
+    <div class="card mx-auto mt-3 p-3" style="width: auto;">
+      <div>
+        <label for="drug-select">Pilih Obat:</label>
+        <select v-model="selectedDrug" id="drug-select">
+          <option value="" disabled>Pilih...</option>
+          <option v-for="drug in drugs" :key="drug.id_obat" :value="drug.id_obat">{{ drug.nama_obat }} ({{ drug.stok }})</option>
         </select>
       </div>
+      <div class="mx-auto">
+        <label for="drug-quantity">Jumlah:</label>
+        <input v-model.number="selectedQuantity" type="number" min="1" placeholder="Jumlah" id="drug-quantity"/>
+        <ul>
+          <li v-for="(entry, index) in selectedDrugs" :key="index">
+            {{ entry.name }} - Jumlah: {{ entry.quantity }}
+            <button @click="removeDrug(index)" class="m-2">Hapus</button>
+          </li>
+        </ul>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text" id="basic-addon1" for="nama_dokter">Diagnosis</span>
+        <input type="text" class="form-control m-auto" v-model="diagnosis">
+      </div>
+      <div class="mt-3">
+        <button @click="handleTambahkan">Tambahkan</button>
+      </div>
     </div>
+  </div>
 </template>
-  
-  
-<script>
-import Add_rawat_inap from './add_rawat_inap.vue';
 
+<script>
 export default {
   data() {
     return {
-      selectedSpesialisasi: '',
-      selectedDoctor: '',
-      spesialisasiOptions: [],
-      doctorOptions: []
+      selectedDrug: '',
+      selectedQuantity: 1,
+      drugs: [],
+      selectedDrugs: [],
+      diagnosis: '',
+      existingEntry: null
     };
   },
-  computed: {
-    filteredDoctors() {
-      if (!this.selectedSpesialisasi) {
-        return [];
-      } else {
-        return this.doctorOptions.filter(doctor => doctor.spesialisasi === this.selectedSpesialisasi);
-      }
-    }
+  mounted() {
+    this.fetchDrugs(); // Panggil method untuk mengambil data obat-obatan saat komponen dimuat
   },
   methods: {
-    async fetchDoctors() {
+    async fetchDrugs() {
       try {
-        // Mendapatkan data spesialisasi dari API
-        const spesialisasiResponse = await fetch('http://localhost:3000/dokter/spesialisasi');
-        const spesialisasiData = await spesialisasiResponse.json();
-        this.spesialisasiOptions = spesialisasiData;
+        // Ganti URL berikut dengan URL API yang sesuai
+        const apiUrl = 'http://localhost:3000/obat';
 
-        // Mendapatkan data dokter dari API
-        const doctorsResponse = await fetch('http://localhost:3000/dokter');
-        const doctorsData = await doctorsResponse.json();
-        this.doctorOptions = doctorsData;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // Data dari API disimpan ke dalam state 'drugs'
+        this.drugs = data;
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Terjadi kesalahan saat mengambil data obat:', error);
       }
     },
-    async Add_rawat_inap() {
+    async addDrug() {
+      if (this.selectedDrug && this.selectedQuantity > 0) {
+        const selectedDrug = this.drugs.find(drug => drug.id_obat === this.selectedDrug);
+        if (selectedDrug) {
+          this.existingEntry = this.selectedDrugs.find(entry => entry.id === selectedDrug.id_obat);
+          if (this.existingEntry) {
+            this.existingEntry.quantity += this.selectedQuantity;
+          } else {
+            this.existingEntry = {
+              id: selectedDrug.id_obat,
+              name: selectedDrug.nama_obat,
+              quantity: this.selectedQuantity
+            };
+            this.selectedDrugs.push(this.existingEntry);
+          }
+          await this.addobatresep(selectedDrug.id_obat, this.existingEntry.quantity); // Memanggil addobatresep dengan id_obat dan kuantitas
+          this.selectedDrug = ''; // Reset dropdown after selection
+          this.selectedQuantity = 1; // Reset quantity input after selection
+        }
+      }
+    },
+    async addobatresep(id_obat, banyak) {
+      const resep_id = localStorage.getItem('id_resep');
+      const url = 'http://localhost:3000/resep_obat';
+      const data = {
+        obat_id_obat: id_obat,
+        resep_id_resep: resep_id,
+        kuantitas: banyak
+      };
+
       try {
-        // Mengirim permintaan POST untuk menambahkan dokter baru
-        const response = await fetch('http://localhost:3000/rawat_inap', {
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            nama_dokter: this.newDoctorName,
-            spesialisasi: this.newDoctorSpecialization
-          })
+          body: JSON.stringify(data)
         });
 
-        // Menangani respons dari server
-        if (response.ok) {
-          console.log('Dokter berhasil ditambahkan!');
-          // Memuat ulang data dokter setelah berhasil menambahkan
-          this.fetchDoctors();
-          // Kosongkan input setelah berhasil menambahkan
-          this.newDoctorName = '';
-          this.newDoctorSpecialization = '';
-        } else {
-          console.error('Gagal menambahkan dokter');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const responseData = await response.json();
+        console.log('Data telah dimasukkan:', responseData);
       } catch (error) {
-        console.error('Error adding doctor:', error);
+        console.error('Error:', error);
       }
+    },
+    async updateRawatInap() {
+      // console.log(localStorage.getItem('obj_ri'))
+      const rawatInapId = localStorage.getItem('id_ri');
+      const url = `http://localhost:3000/rawat_inap/${rawatInapId}`;
+      const data = {
+        diagnosis: this.diagnosis
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Rawat inap updated:', responseData);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    },
+    async handleTambahkan() {
+      await this.addDrug();
+      await this.updateRawatInap();
+    },
+    removeDrug(index) {
+      this.selectedDrugs.splice(index, 1);
     }
-  },
-  created() {
-    // Panggil method fetchDoctors saat komponen dibuat untuk mengisi data spesialisasi dan dokter dari API
-    this.fetchDoctors();
   }
 };
 </script>
 
-  
+<style scoped>
+label {
+  margin-right: 10px;
+}
+
+select, input, button {
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background: #f9f9f9;
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  background: rgb(60, 94, 233);
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgb(45, 77, 202);
+}
+</style>

@@ -51,21 +51,21 @@ const router = createRouter({
       props:true
     },
     {
-      path: '/add_rawat_inap',
+      path: '/verif_pasien',
+      name: 'verif_pasien',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/verif_pasien.vue'),
+      props:true
+    },
+    {
+      path: '/add_rawat_inap/:id_pasien',
       name: 'add_rawat_inap',
       // route level code-splitting
       // this generates a separate chunk (edit_dokter.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/add_rawat_inap.vue'),
-      props:true
-    },
-    {
-      path: '/edit_rawat_inap/:id_pasien',
-      name: 'edit_rawat_inap',
-      // route level code-splitting
-      // this generates a separate chunk (edit_dokter.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/edit_rawat_inap.vue'),
       props:true
     },
     {
@@ -76,6 +76,15 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/pasien.vue'),
       props:true
+    },
+    {
+      path: '/edit_rawat_inap/:id_dokter',
+      name: 'edit_rawat_inap',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/edit_rawat_inap.vue'),
+      props:true 
     },
     {
       path: '/pasien/add',
