@@ -1,34 +1,40 @@
 <template>
-  <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Nama Pasien</th>
-          <th>Nomor Kamar</th>
-          <th>Tanggal Masuk</th>
-          <th>Tanggal Keluar</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="person in people" :key="person.id">
-          <td>{{ person.Nama }}</td>
-          <td>{{ person.Nomor_Kamar }}</td>
-          <td>{{ formatDate(person.Tanggal_Masuk) }}</td>
-          <td>{{ formatDate(person.Tanggal_Keluar) }}</td>
-          <td>
-            <button type="button" class="btn btn-primary mx-auto">edit</button>
-            <button type="button" class="btn btn-danger mx-1">hapus</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="add d-flex justify-content-center">
-    <button type="button" class="btn btn-primary">Primary</button>
-  </div>
   <div>
-    <Dropdown/>
+    <div class="add d-flex justify-content-end">
+      <router-link :to="{ name: 'add_dokter' }" type="button" class="btn btn-primary">Add Data</router-link>
+    </div>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Pasien</th>
+            <th>Jenis Kelamin</th>
+            <th>Tanggal Diperiksa</th>
+            <th>Diagnosis</th>
+            <th>Nama Dokter</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(pasien, index) in pasienData" :key="pasien.id_pasien">
+            <td>{{ index + 1 }}</td>
+            <td>{{ pasien.nama }}</td>
+            <td>{{ pasien.jenis_kelamin }}</td>
+            <td>{{ formatDate(pasien.Tanggal_Diperiksa) }}</td>
+            <td>{{ pasien.Diagnosis }}</td>
+            <td>{{ pasien.nama_dokter }}</td>
+            <td>
+              <button type="button" class="btn btn-primary mx-auto">edit</button>
+              <button type="button" class="btn btn-danger mx-1">hapus</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <Dropdown/>
+    </div>
   </div>
 </template>
 
@@ -39,7 +45,7 @@ import Dropdown from '../components/Dropdown.vue';
 export default {
   data() {
     return {
-      people: [],
+      pasienData: [],
       error: null
     };
   },
@@ -53,12 +59,13 @@ export default {
   methods: {
     async fetchDoctors() {
       try {
-        const response = await fetch('http://localhost:3000/'); // Replace with your API endpoint
+        const response = await fetch('http://localhost:3000/rawat_jalan'); // Replace with your API endpoint
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        this.people = data;
+        this.pasienData = data;
+        console.log(this.pasienData);
       } catch (error) {
         this.error = 'Error fetching data: ' + error.message;
         console.error('Error fetching data:', error);

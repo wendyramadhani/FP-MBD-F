@@ -78,6 +78,7 @@ const router = createRouter({
       props:true
     },
     {
+<<<<<<< HEAD
       path: '/edit_rawat_inap/:id_dokter',
       name: 'edit_rawat_inap',
       // route level code-splitting
@@ -85,6 +86,24 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/edit_rawat_inap.vue'),
       props:true 
+=======
+      path: '/pasien/add',
+      name: 'add_pasien',
+      component: () => import('../views/add_pasien.vue'),
+      props: true
+    },
+    {
+      path: '/pasien/:id_pasien',
+      name: 'edit_pasien',
+      component: () => import('../views/edit_pasien.vue'),
+      props: true
+    },
+    {
+      path: '/rawat_jalan',
+      name: 'index_rawat_jalan',
+      component: () => import('../views/rawat_jalan.vue'),
+      props: true
+>>>>>>> d43db23355ae1b1a6d25ff13f46f0f5afec17e6d
     }
   ]
 })

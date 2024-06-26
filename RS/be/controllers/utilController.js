@@ -12,6 +12,26 @@ const checkId = async (req, res, next) => {
     }
 }
 
+const dashboardData = async (req, res, next) => {
+    try {
+        const totalPasien = await utilService.getTotalPasien();
+        const totalDokter = await utilService.getTotalDokter();
+        const totalPasienInap = await utilService.getTotalPasienInap();
+        const totalPasienJalan = await utilService.getTotalPasienJalan();
+
+        return res.status(200).json({ 
+            total_pasien: totalPasien, 
+            total_dokter: totalDokter,
+            total_pasien_inap: totalPasienInap,
+            total_pasien_jalan: totalPasienJalan
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error);
+    }
+}
+
 module.exports = {
-    checkId
+    checkId,
+    dashboardData,
 };
