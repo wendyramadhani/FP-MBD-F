@@ -105,12 +105,12 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/verif_jalan',
-      name: 'verif_jalan',
+      path: '/obat',
+      name: 'obat',
       // route level code-splitting
       // this generates a separate chunk (edit_dokter.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/verif_pasien_jalan.vue'),
+      component: () => import('../views/obat.vue'),
       props:true
     },
     {
@@ -130,7 +130,34 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/edit_rawat_jalan.vue'),
       props:true 
-    }    
+    },
+    {
+      path: '/verif_jalan',
+      name: 'verif_jalan',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/verif_pasien_jalan.vue'),
+      props:true
+    },
+    {
+      path: '/edit_obat/:id_obat',
+      name: 'edit_obat',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/edit_obat.vue'),
+      props:true
+    },
+    {
+      path: '/add_obat',
+      name: 'add_obat',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/add_obat.vue'),
+      props:true
+    }
   ]
 })
 
