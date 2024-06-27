@@ -12,6 +12,8 @@ import { RouterLink, RouterView } from 'vue-router'
           <RouterLink to="/rawat_jalan" class="tulisan btn text-white">Rawat jalan</RouterLink>
 
           <button type="button" class="tulisan btn text-white">pembayaran</button>
+          <RouterLink to="/obat" class="tulisan btn text-white">Obat</RouterLink>
+
       </div>
       <div class="d-flex justify-content-start">
           <RouterLink to="/" class="gambar btn"><img src="./assets/customicon.jpg" style="width: 50px; height: auto;"></RouterLink>

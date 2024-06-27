@@ -19,8 +19,7 @@ const getById = async (id_obat) => {
 
 const insert = async (obat) => {
     const [result] = await db.execute(
-        `INSERT INTO obat (nama_obat, deskripsi, stok, harga)
-        VALUES (?, ?, ?, ?)`,
+        `CALL add_obat(?, ?, ?, ?)`,
         [obat.nama_obat, obat.deskripsi, obat.stok, obat.harga]
     );
     return result;
