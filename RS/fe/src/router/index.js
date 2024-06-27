@@ -112,7 +112,25 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/verif_pasien_jalan.vue'),
       props:true
-    }
+    },
+    {
+      path: '/add_rawat_jalan/:id_pasien',
+      name: 'add_rawat_jalan',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/add_rawat_jalan.vue'),
+      props:true
+    },
+    {
+      path: '/edit_rawat_jalan/:id_dokter',
+      name: 'edit_rawat_jalan',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/edit_rawat_jalan.vue'),
+      props:true 
+    }    
   ]
 })
 

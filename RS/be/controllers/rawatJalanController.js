@@ -22,14 +22,14 @@ const getRawatJalanById = async (req, res, next) => {
 };
 
 const addRawatJalan = async (req, res, next) => {
-    const { status, tanggal_diperiksa, diagnosis, pasien_id_pasien, dokter_id_dokter, resep_id_resep, pembayaran_id_pembayaran } = req.body;
+    const {  pasien_id_pasien, dokter_id_dokter} = req.body;
 
-    if (!status || !tanggal_diperiksa || !diagnosis || !pasien_id_pasien || !dokter_id_dokter || !resep_id_resep || !pembayaran_id_pembayaran) {
+    if (!pasien_id_pasien || !dokter_id_dokter) {
         res.status(400).json({ error: 'All fields must filled' });
     }
     
     try {
-        const rawat_jalan = { status, tanggal_diperiksa, diagnosis, pasien_id_pasien, dokter_id_dokter, resep_id_resep, pembayaran_id_pembayaran };
+        const rawat_jalan = { pasien_id_pasien, dokter_id_dokter };
 
         const checkIdResult = await utilService.checkIdPasien(rawat_jalan.pasien_id_pasien);
         // res.status(200).json({ id_res: checkIdResult });

@@ -53,7 +53,7 @@
           if (this.res === 1) {
             this.errorMessage = '';
             this.successMessage = 'Patient exists';
-            this.$router.push({ name: 'add_rawat_inap', params: { id_pasien: this.id_pasien } });
+            this.$router.push({ name: 'add_rawat_jalan', params: { id_pasien: this.id_pasien } });
           } else {
             this.errorMessage = 'Patient doesn\'t exist';
             this.successMessage = '';
