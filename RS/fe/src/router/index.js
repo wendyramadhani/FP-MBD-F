@@ -112,6 +112,12 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/verif_pasien_jalan.vue'),
       props:true
+    },
+    {
+      path: '/pembayaran',
+      name: 'pembayaran',
+      component: () => import('../views/pembayaran.vue'),
+      props: true
     }
   ]
 })

@@ -10,8 +10,7 @@ import { RouterLink, RouterView } from 'vue-router'
           <RouterLink to="/pasien" class="tulisan btn text-white">pasien</RouterLink>
           <RouterLink to="/rawat_inap" class="tulisan btn text-white">Rawat Inap</RouterLink>
           <RouterLink to="/rawat_jalan" class="tulisan btn text-white">Rawat jalan</RouterLink>
-
-          <button type="button" class="tulisan btn text-white">pembayaran</button>
+          <RouterLink to="/pembayaran" class="tulisan btn text-white">Pembayaran</RouterLink>
       </div>
       <div class="d-flex justify-content-start">
           <RouterLink to="/" class="gambar btn"><img src="./assets/customicon.jpg" style="width: 50px; height: auto;"></RouterLink>
