@@ -2,7 +2,7 @@ const db = require('../config/db.config');
 
 const getAll = async () => {
     const [result] = await db.execute(
-        'SELECT * FROM pembayaran'
+        'SELECT id_pembayaran, biaya, metode_pembayaran, tanggal_pembayaran FROM pembayaran'
     );
     return result;
 };
