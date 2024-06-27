@@ -12,8 +12,13 @@ const addData = async (pembayaran) => {
     return await pembayaranRepository.insert(pembayaran);
 };
 
+const updateData = async (id_pembayaran, pembayaran) => {
+    return await pembayaranRepository.update(id_pembayaran, pembayaran);
+}
+
 module.exports = {
     getAllData,
     getDataById,
     addData,
+    updateData,
 };

@@ -132,6 +132,18 @@ const router = createRouter({
       props:true 
     },
     {
+      path: '/pembayaran',
+      name: 'pembayaran',
+      component: () => import('../views/pembayaran.vue'),
+      props: true
+    },
+    {
+      path: '/pembayaran/:id_pembayaran',
+      name: 'bayar',
+      component: () => import('../views/bayar.vue'),
+      props: true
+    },
+    {
       path: '/verif_jalan',
       name: 'verif_jalan',
       // route level code-splitting

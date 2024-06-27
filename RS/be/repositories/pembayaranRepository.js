@@ -2,7 +2,7 @@ const db = require('../config/db.config');
 
 const getAll = async () => {
     const [result] = await db.execute(
-        'SELECT * FROM pembayaran'
+        'SELECT id_pembayaran, biaya, metode_pembayaran, tanggal_pembayaran FROM pembayaran'
     );
     return result;
 };
@@ -23,8 +23,21 @@ const insert = async (pembayaran) => {
     return result;
 }
 
+const update = async (id_pembayaran, pembayaran) => {
+    const [result] = await db.execute(
+        `UPDATE pembayaran
+        SET biaya = ?,
+            metode_pembayaran = ?,
+            tanggal_pembayaran = ?
+        WHERE id_pembayaran = ?`,
+        [pembayaran.biaya, pembayaran.metode_pembayaran, pembayaran.tanggal_pembayaran, id_pembayaran]
+    );
+    return result;
+}
+
 module.exports = {
     getAll,
     getById,
     insert,
+    update,
 };
