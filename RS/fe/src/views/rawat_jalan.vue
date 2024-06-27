@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="add d-flex justify-content-end">
-      <router-link :to="{ name: 'add_dokter' }" type="button" class="btn btn-primary">Add Data</router-link>
+      <router-link :to="{ name: 'verif_jalan' }" type="button" class="btn btn-primary">Add Data</router-link>
     </div>
     <div class="table-container">
       <table class="table">

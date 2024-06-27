@@ -30,18 +30,10 @@ const insert = async (rawat_inap) => {
 
 const update = async (id_rawat_inap, rawat_inap) => {
     const [result] = await db.execute(
-        'CALL update_rawat_inap(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'CALL update_rawat_inap( ?, ?)',
         [
             id_rawat_inap,
-            rawat_inap.nomor_kamar, 
-            rawat_inap.status, 
-            rawat_inap.tanggal_masuk, 
-            rawat_inap.tanggal_keluar, 
             rawat_inap.diagnosis, 
-            rawat_inap.pasien_id_pasien, 
-            rawat_inap.dokter_id_dokter, 
-            rawat_inap.resep_id_resep, 
-            rawat_inap.pembayaran_id_pembayaran
         ]
     );
     return result;

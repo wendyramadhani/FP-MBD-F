@@ -18,12 +18,16 @@
           </li>
         </ul>
       </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1" for="nama_dokter">Diagnosis</span>
-        <input type="text" class="form-control m-auto" v-model="diagnosis">
+      <div>
+        <label for="diagnosis">Diagnosis:</label>
+        <input v-model="diagnosis" type="text" id="diagnosis" placeholder="Masukkan diagnosis"/>
       </div>
-      <div class="mt-3">
-        <button @click="handleTambahkan">Tambahkan</button>
+      <div class="mx-auto">
+        <button @click="addDrug">Tambahkan</button>
+        <button @click="updateDiagnosis">Update Diagnosis</button>
+      </div>
+      <div class="mx-auto">
+        <button @click="handleTambahkan" class="px-5 rounded">Lanjut</button>
       </div>
     </div>
   </div>
@@ -47,13 +51,11 @@ export default {
   methods: {
     async fetchDrugs() {
       try {
-        // Ganti URL berikut dengan URL API yang sesuai
         const apiUrl = 'http://localhost:3000/obat';
 
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        // Data dari API disimpan ke dalam state 'drugs'
         this.drugs = data;
       } catch (error) {
         console.error('Terjadi kesalahan saat mengambil data obat:', error);
@@ -74,9 +76,9 @@ export default {
             };
             this.selectedDrugs.push(this.existingEntry);
           }
-          await this.addobatresep(selectedDrug.id_obat, this.existingEntry.quantity); // Memanggil addobatresep dengan id_obat dan kuantitas
-          this.selectedDrug = ''; // Reset dropdown after selection
-          this.selectedQuantity = 1; // Reset quantity input after selection
+          await this.addobatresep(selectedDrug.id_obat, this.existingEntry.quantity);
+          this.selectedDrug = '';
+          this.selectedQuantity = 1;
         }
       }
     },
@@ -108,12 +110,15 @@ export default {
         console.error('Error:', error);
       }
     },
-    async updateRawatInap() {
-      // console.log(localStorage.getItem('obj_ri'))
-      const rawatInapId = localStorage.getItem('id_ri');
-      const url = `http://localhost:3000/rawat_inap/${rawatInapId}`;
+    async handleTambahkan() {
+      this.$router.push({ name: 'update_diagnosis', params: { id_rawat_inap: localStorage.getItem('id_ri') } }); // Pindah ke view lain setelah menambahkan obat
+    },
+    async updateDiagnosis() {
+      const id_rawat_inap = localStorage.getItem('id_ri');
+      const url = `http://localhost:3000/rawat_inap/${id_rawat_inap}`;
+      console.log(id_rawat_inap)
       const data = {
-        diagnosis: this.diagnosis
+        diagnosis:this.diagnosis,
       };
 
       try {
@@ -130,14 +135,10 @@ export default {
         }
 
         const responseData = await response.json();
-        console.log('Rawat inap updated:', responseData);
+        console.log('Diagnosis telah diupdate:', responseData);
       } catch (error) {
         console.error('Error:', error);
       }
-    },
-    async handleTambahkan() {
-      await this.addDrug();
-      await this.updateRawatInap();
     },
     removeDrug(index) {
       this.selectedDrugs.splice(index, 1);

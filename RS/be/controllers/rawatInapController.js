@@ -46,15 +46,15 @@ const addRawatInap = async (req, res, next) => {
 }
 
 const updateRawatInap = async (req, res, next) => {
-    const { nomor_kamar, status, tanggal_masuk, tanggal_keluar, diagnosis, pasien_id_pasien, dokter_id_dokter, resep_id_resep, pembayaran_id_pembayaran } = req.body;
+    const { diagnosis} = req.body;
     const { id_rawat_inap } = req.params;
 
-    if (!nomor_kamar, !status, !tanggal_masuk, !tanggal_keluar, !diagnosis, !pasien_id_pasien, !dokter_id_dokter, !resep_id_resep, !pembayaran_id_pembayaran) {
+    if ( !diagnosis) {
         res.status(400).json({ error: 'All fields must filled' });
     }
 
     try {
-        const rawat_inap = { nomor_kamar, status, tanggal_masuk, tanggal_keluar, diagnosis, pasien_id_pasien, dokter_id_dokter, resep_id_resep, pembayaran_id_pembayaran };
+        const rawat_inap = { diagnosis };
         const result = await rawatInapService.updateData(id_rawat_inap, rawat_inap);
         res.status(200).json({ success: true, message: 'Success Updating Data', data: rawat_inap });
     } catch (error) {

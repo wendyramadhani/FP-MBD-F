@@ -103,6 +103,15 @@ const router = createRouter({
       name: 'index_rawat_jalan',
       component: () => import('../views/rawat_jalan.vue'),
       props: true
+    },
+    {
+      path: '/verif_jalan',
+      name: 'verif_jalan',
+      // route level code-splitting
+      // this generates a separate chunk (edit_dokter.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/verif_pasien_jalan.vue'),
+      props:true
     }
   ]
 })
