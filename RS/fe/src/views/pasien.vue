@@ -27,7 +27,6 @@
               <td>{{ person.nomor_telepon }}</td>
               <td>{{ person.asuransi }}</td>
               <td>
-                <router-link :to="{ name: 'edit_pasien', params: { id_pasien: person.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link>
                 <button type="button" class="btn btn-danger mx-1" @click="confirmDelete(person.id_pasien)">Hapus</button>
               </td>
             </tr>
