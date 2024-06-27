@@ -1,39 +1,53 @@
 <template>
   <div>
-    <div class="add d-flex justify-content-end">
-      <router-link :to="{ name: 'verif_jalan' }" type="button" class="btn btn-primary">Add Data</router-link>
-    </div>
-    <div class="table-container">
+    <div v-if="error" class="alert alert-danger">{{ error }}</div>
+    <div v-else class="table-container">
       <table class="table">
         <thead>
           <tr>
             <th>No</th>
             <th>Nama Pasien</th>
+            <th>Tanggal Lahir</th>
             <th>Jenis Kelamin</th>
-            <th>Tanggal Diperiksa</th>
+            <th>Alamat</th>
+            <th>Nomor Telepon</th>
+            <th>Asuransi</th>
+            <th>Tanggal Masuk</th>
+            <th>Dokter</th>
+            <th>Spesialisasi</th>
             <th>Diagnosis</th>
-            <th>Nama Dokter</th>
-            <th>Option</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(pasien, index) in pasienData" :key="pasien.id_pasien">
-            <td>{{ index + 1 }}</td>
-            <td>{{ pasien.nama }}</td>
-            <td>{{ pasien.jenis_kelamin }}</td>
-            <td>{{ formatDate(pasien.Tanggal_Diperiksa) }}</td>
-            <td>{{ pasien.Diagnosis }}</td>
-            <td>{{ pasien.nama_dokter }}</td>
+          <tr v-for="(person,index) in people" :key="index">
+            <td>{{ index+1}}</td>
+            <td>{{ person.Nama }}</td>
+            <td>{{ formatDate(person.Tanggal_Lahir) }}</td>
+            <td>{{ person.Jenis_Kelamin }}</td>
+            <td>{{ person.Alamat }}</td>
+            <td>{{ person.Nomor_Telepon }}</td>
+            <td>{{ person.Asuransi }}</td>
+            <td>{{ formatDate(person.Tanggal_Diperiksa) }}</td>
+            <td>{{ person.dokter.nama_dokter }}</td>
+            <td>{{ person.dokter.spesialisasi }}</td>
+            <td>{{ person.Diagnosis }}</td>
             <td>
-              <button type="button" class="btn btn-primary mx-auto">edit</button>
-              <button type="button" class="btn btn-danger mx-1">hapus</button>
+              <div class="d-flex justify-content-between">
+                <div v-if="person.Diagnosis == null">
+                  <button @click="navigateToEdit(person.Dokter_ID_Dokter,person.Resep_ID_Resep,person.ID_Rawat_Jalan)" class="btn btn-primary mx-auto">Edit</button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="add d-flex justify-content-center">
+      <router-link :to="{ name: 'verif_jalan' }" class="btn btn-primary">Tambah</router-link>
+    </div>
     <div>
-      <Dropdown/>
+      <Dropdown />
     </div>
   </div>
 </template>
@@ -41,31 +55,53 @@
 <script>
 import { RouterLink } from 'vue-router';
 import Dropdown from '../components/Dropdown.vue';
-// import Dropdown from '../components/Dropdown.vue';
+
 export default {
   data() {
     return {
-      pasienData: [],
-      error: null
+      people: [],
+      doctors: [],
+      error: null,
     };
   },
   components: {
     Dropdown
-    },
-
+  },
   created() {
-    this.fetchDoctors();
+    this.fetchData();
   },
   methods: {
     async fetchDoctors() {
       try {
-        const response = await fetch('http://localhost:3000/rawat_jalan'); // Replace with your API endpoint
+        const response = await fetch('http://localhost:3000/dokter');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        this.pasienData = data;
-        console.log(this.pasienData);
+        this.doctors = data;
+
+      } catch (error) {
+        this.error = 'Error fetching doctors data: ' + error.message;
+        console.error('Error fetching doctors data:', error);
+      }
+    },
+    async fetchData() {
+      try {
+        await this.fetchDoctors();
+
+        const response = await fetch('http://localhost:3000/rawat_jalan');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        this.people = data;
+        console.log(this.people);
+
+        // Map each patient with their corresponding doctor data
+        this.people = data.map(person => {
+          person.dokter = this.doctors.find(dokter => dokter.id_dokter === person.Dokter_ID_Dokter) || {};
+          return person;
+        });
       } catch (error) {
         this.error = 'Error fetching data: ' + error.message;
         console.error('Error fetching data:', error);
@@ -78,6 +114,13 @@ export default {
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    },
+    navigateToEdit(id_dokter,id_resep,id_rj) {
+      // console.log(this.people);
+      // localStorage.setItem('obj_ri',this.people)
+      localStorage.setItem('id_resep', id_resep);
+      localStorage.setItem('id_rj',id_rj);
+      this.$router.push({ name: 'edit_rawat_jalan', params: { id_dokter } });
     }
   }
 };
@@ -92,6 +135,7 @@ export default {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-size: 0.85em; /* Adjust the font size here */
 }
 .table th, .table td {
   border: 1px solid #dddddd;

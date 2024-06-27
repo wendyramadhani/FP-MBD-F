@@ -41,7 +41,6 @@
                 <div v-if="!person.Tanggal_Keluar">
                   <button @click="navigateToEdit(person.Dokter_ID_Dokter,person.Resep_ID_Resep,person.ID_Rawat_Inap)" class="btn btn-primary mx-auto">Edit</button>
                 </div>
-                <button type="button" class="btn btn-danger mx-1">Hapus</button>
               </div>
             </td>
           </tr>
