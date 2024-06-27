@@ -23,8 +23,21 @@ const insert = async (pembayaran) => {
     return result;
 }
 
+const update = async (id_pembayaran, pembayaran) => {
+    const [result] = await db.execute(
+        `UPDATE pembayaran
+        SET biaya = ?,
+            metode_pembayaran = ?,
+            tanggal_pembayaran = ?
+        WHERE id_pembayaran = ?`,
+        [pembayaran.biaya, pembayaran.metode_pembayaran, pembayaran.tanggal_pembayaran, id_pembayaran]
+    );
+    return result;
+}
+
 module.exports = {
     getAll,
     getById,
     insert,
+    update,
 };

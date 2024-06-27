@@ -73,7 +73,7 @@ export default {
         } else {
           throw new Error('No data found');
         }
-        console.log(pasienData[0]);
+        console.log(this.pasien.nama);
         // this.pasien = pasienData;
       } catch (error) {
         this.errorMessage = `Error: ${error.message}`;
@@ -81,12 +81,12 @@ export default {
     },
     
     async submitForm() {
-      const url = 'http://localhost:3000/pasien';
+      const url = `http://localhost:3000/pasien/${this.$route.params.id_pasien}`;
       console.log(this.pasien);
       const data = this.pasien;
       try {
         const response = await fetch(url, {
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },

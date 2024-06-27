@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="add d-flex justify-content-end">
-      <router-link :to="{ name: 'add_pasien' }" type="button" class="btn btn-primary">Add Pasien</router-link>
-    </div>
     <div class="table-container">
       <table class="table">
         <thead>
@@ -18,11 +15,13 @@
           <tr v-for="(pay, index) in pembayaran" :key="index">
             <td>{{ index + 1 }}</td>
             <td>{{ pay.biaya }}</td>
-            <td>{{ pay.metode_pembayaran }}</td>
-            <td>{{ pay.tanggal_pembayaran }}</td>
+            <td v-if="pay.metode_pembayaran">{{ pay.metode_pembayaran }}</td>
+            <td v-else>Belum dibayar</td>
+            <td v-if="pay.tanggal_pembayaran">{{ formatDate(pay.tanggal_pembayaran) }}</td>
+            <td v-else>-</td>
             <td>
-              <!-- <router-link :to="{ name: 'edit_pasien', params: { id_pasien: pay.id_pasien } }" class="btn btn-primary mx-1">Edit</router-link> -->
-              <button type="button" class="btn btn-danger mx-1" @click="confirmDelete(pay.id_pasien)">Hapus</button>
+              <router-link v-if="!pay.metode_pembayaran" :to="{ name: 'bayar', params: { id_pembayaran: pay.id_pembayaran } }" class="btn btn-success mx-1">Bayar</router-link>
+              <div v-else>Sudah dibayar</div>
             </td>
           </tr>
         </tbody>
@@ -32,6 +31,8 @@
 </template>
 
 <script>
+
+import { formatDate } from '../assets/js/script';
 
 export default {
   data() {
@@ -57,7 +58,8 @@ export default {
         this.error = 'Error fetching data: ' + error.message;
         console.error('Error fetching data:', error);
       }
-    }
+    },
+    formatDate
   }
 }
 

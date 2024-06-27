@@ -137,7 +137,13 @@ const router = createRouter({
       name: 'pembayaran',
       component: () => import('../views/pembayaran.vue'),
       props: true
-    }
+    },
+    {
+      path: '/pembayaran/:id_pembayaran',
+      name: 'bayar',
+      component: () => import('../views/bayar.vue'),
+      props: true
+    },
   ]
 })
 
